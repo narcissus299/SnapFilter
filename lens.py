@@ -1,11 +1,12 @@
 import numpy as np
 import cv2
 
-SCALE_FACTOR = 1.3
+SCALE_FACTOR = 1.4
 DISPLAY_BOUNDRY_BOX = False
 
 # Read the image and convert to gray
-img = cv2.imread('face1.jpg')
+img = cv2.imread('face5.jpg')
+cv2.imshow('original',img)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 sunglasses = cv2.imread('sunglasses.png') #Feature to be added

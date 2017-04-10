@@ -1,20 +1,16 @@
 import numpy as np
 import cv2
 
-
-SCALE_FACTOR = 1.4
+SCALE_FACTOR = 1.5
 DISPLAY_BOUNDRY_BOX = False
 
-sunglasses = cv2.imread('sunglasses.png') #Feature to be added
+sunglasses = cv2.imread('thug.jpg') #Feature to be added
 
 # now we can try to detect faces
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-
 cap = cv2.VideoCapture(0)
-
-
 
 while(True):
 	# Capture frame-by-frame
@@ -31,6 +27,7 @@ while(True):
 
 		#(x,y,w,h) = sorted(faces, key=lambda face: face[2]*face[3])[-1] #Might have more than one face -> choose the largest
 		for (x,y,w,h) in faces:
+			
 			if DISPLAY_BOUNDRY_BOX:
 				cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
 			    
@@ -63,17 +60,19 @@ while(True):
 				pixel_scale_y = int((size_y- (lh)) /2)
 
 				if not filter_applied:
+					#Sepia filter
 					sepia_kernel = np.array([[0.272,0.534,0.131],[0.349,0.686,0.168],[0.393,0.769,0.189]])
-					img_sepia = cv2.transform(img,sepia_kernel) #Speia image
+					filtered_img = cv2.transform(img,sepia_kernel)
+					
 					filter_applied = True
 
 				for i in range(ly -pixel_scale_y,ly+lh +pixel_scale_y):
 					for j in range(lx -pixel_scale_x, rx+rw +pixel_scale_x):
 						val_sunglasses = distored_sunglasses[i-(ly-pixel_scale_y), j-(lx-pixel_scale_x)]
 						if np.all(val_sunglasses < 250):
-							img_sepia[i,j] = val_sunglasses
+							filtered_img[i,j] = val_sunglasses
 
-				img = img_sepia
+				img = filtered_img
 			cv2.imshow('frame',img)
 	else:
 		cv2.imshow('frame',img)
