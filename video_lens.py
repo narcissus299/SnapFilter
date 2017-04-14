@@ -91,6 +91,10 @@ while(True):
 					my += (ly+ry)/2
 
 					#Ratio of the mouth over which it is to be applied
+					#mc1 and mc2 decide the range for x
+					#mc3 and mc4 decide the range for y
+					#decrease mc1 and mc2 to move it left and increase to move it right
+					#decrease mc3 and mc4 to move it up and increase to move it down
 					mc1 = 0.5
 					mc2 = 0.8
 
@@ -101,14 +105,12 @@ while(True):
 
 					distorted_jnt = cv2.resize(jnt, (jw_real, int(1.25*jw_real) )) #0.8 magic number to conserve ratio of joint image
 
-					for i in range(mx + int(mc1*mw), mx+ int(mc1*mw)+ jw_real):
-						for j in range( my + int(mc3*mh), my + int(mc3*mh) + int(1.25*jw_real) ):
-							
-							if i<filtered_img.shape[0] and j<filtered_img.shape[1] and i-(mx + int(mc1*mw)) < distorted_jnt.shape[0] and j-(my + int(mc3*mh)) < distorted_jnt.shape[1]:
-
-								val_jnt = distorted_jnt[i-(mx + int(mc1*mw)), j-(my + int(mc3*mh))]
+					for j in range(mx + int(mc1*mw), mx+ int(mc1*mw)+ jw_real):
+						for i in range( my + int(mc3*mh), my + int(mc3*mh) + int(1.25*jw_real) ):
+						
+							val_jnt = distorted_jnt[i-(my + int(mc3*mh)), j-(mx + int(mc1*mw))] 
 								
-								if np.all(val_jnt < 253): #since opencv refuses to work with pngs
+							if np.all(val_jnt < 253): #since opencv refuses to work with pngs
 									filtered_img[i,j] = val_jnt
 
 					if DISPLAY_BOUNDRY_BOX:
