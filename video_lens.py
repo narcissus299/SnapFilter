@@ -101,13 +101,15 @@ while(True):
 
 					distorted_jnt = cv2.resize(jnt, (jw_real, int(1.25*jw_real) )) #0.8 magic number to conserve ratio of joint image
 
-					# for i in range(mx + int(mc1*mw), mx+ int(mc1*mw)+ jw_real):
-					# 	for j in range(my + int(mc3*mh), my + int(mc3*mh) + int(0.8*jw_real)):
+					for i in range(mx + int(mc1*mw), mx+ int(mc1*mw)+ jw_real):
+						for j in range( my + int(mc3*mh), my + int(mc3*mh) + int(1.25*jw_real) ):
 							
-					# 		val_jnt = distorted_jnt[i-(mx + int(mc1*mw)), j-(my + int(mc3*mh))]
-							
-					# 		if np.all(val_jnt < 253): #since opencv refuses to work with pngs
-					# 			filtered_img[i,j] = val_jnt
+							if i<filtered_img.shape[0] and j<filtered_img.shape[1] and i-(mx + int(mc1*mw)) < distorted_jnt.shape[0] and j-(my + int(mc3*mh)) < distorted_jnt.shape[1]:
+
+								val_jnt = distorted_jnt[i-(mx + int(mc1*mw)), j-(my + int(mc3*mh))]
+								
+								if np.all(val_jnt < 253): #since opencv refuses to work with pngs
+									filtered_img[i,j] = val_jnt
 
 					if DISPLAY_BOUNDRY_BOX:
 						cv2.rectangle(filtered_img,(mx,my),(mx+mw,my+mh),(0,0,255),2)
