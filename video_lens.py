@@ -111,7 +111,7 @@ while(True):
 							val_jnt = distorted_jnt[i-(my + int(mc3*mh)), j-(mx + int(mc1*mw))] 
 								
 							if np.all(val_jnt < 253): #since opencv refuses to work with pngs
-									filtered_img[i,j] = val_jnt
+								filtered_img[i,j] = val_jnt
 
 					if DISPLAY_BOUNDRY_BOX:
 						cv2.rectangle(filtered_img,(mx,my),(mx+mw,my+mh),(0,0,255),2)
